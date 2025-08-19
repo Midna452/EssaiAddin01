@@ -15,16 +15,32 @@ Office.onReady((info) => {
 
 export async function run() {
   return Word.run(async (context) => {
-    /**Y
-     * Insert your Word code here
-     */
-
-    // insert a paragraph at the end of the document.
-    const paragraph = context.document.body.insertParagraph("Le texte est changé maaaaaaintenant", Word.InsertLocation.end);
-
-    // change the paragraph color to blue.
-    paragraph.font.color = "blue";
-
+    await clearText(context)
     await context.sync();
   });
 }
+
+async function clearText(context) {
+  const body = context.document.body;
+  body.load("text"); // Charger le texte du document
+
+  await context.sync();
+
+  if (body.text !== "") {
+    document.getElementById("modal").style.display = "flex";
+
+    document.getElementById("btnYes").onclick = async () => {
+      body.clear();
+      await context.sync();
+      document.getElementById("modal").style.display = "none";
+      alert("Le document a été effacé !");
+    };
+
+    document.getElementById("btnNo").onclick = () => {
+      document.getElementById("modal").style.display = "none";
+    };
+  } else {
+    alert("Le document est déjà vide.");
+  }
+}
+
