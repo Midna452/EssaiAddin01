@@ -15,11 +15,12 @@ Office.onReady((info) => {
 
 export async function run() {
   return Word.run(async (context) => {
-    /**
-     * Insert your Word code hereY
+    /**Y
+     * Insert your Word code here
      */
+
     // insert a paragraph at the end of the document.
-    const paragraph = context.document.body.insertParagraph("Le texte est changé maintenant", Word.InsertLocation.end);
+    const paragraph = context.document.body.insertParagraph("Le texte est changé maaaaaaintenant", Word.InsertLocation.end);
 
     // change the paragraph color to blue.
     paragraph.font.color = "blue";
