@@ -95,34 +95,45 @@ async function insertInitialMessage(listeTitre) {
   });
 }
 
-function correction(){
-    Word.run(async (context) => {
+async function correction() {
+  await Word.run(async (context) => {
     const paragraphs = context.document.body.paragraphs;
-    paragraphs.load("items/style, items/text");
+    paragraphs.load("items/style");
     await context.sync();
-  
-    const regexNumeroCascade = /^\d+(\.\d+)*\s/;
-    let tousOk = true;
-  
+
+    const stylesAcceptes = ["Titre 1", "Titre 2", "Titre 3"];
+    const stylesDetectes = new Set();
+
     paragraphs.items.forEach(paragraph => {
-      if (["Titre 1", "Titre 2", "Titre 3"].includes(paragraph.style)) {
-        if (!regexNumeroCascade.test(paragraph.text)) {
-          console.log(`Titre sans numérotation en cascade (${paragraph.style}): ${paragraph.text}`);
-          tousOk = false;
-        }
+      if (stylesAcceptes.includes(paragraph.style)) {
+        stylesDetectes.add(paragraph.style);
       }
     });
-  
-    let popupFini = document.getElementById("correction")
-    popupFini.style.display = "flex"
-    if (tousOk) {
-      document.getElementById("resCorrection").innerText = "Exercice réussi !"
+
+    const stylesUtilises = Array.from(stylesDetectes);
+
+    const popup = document.getElementById("correction");
+    const popupText = document.getElementById("resCorrection");
+    popup.style.display = "flex";
+
+    if (stylesUtilises.length === 0) {
+      console.log("Aucun titre avec style 'Titre 1', 'Titre 2' ou 'Titre 3' détecté.");
+      popupText.innerText = "Résultat : ❌";
     } else {
-      document.getElementById("resCorrection").innerText = "Exercice raté :("
+      console.log("Styles titres détectés :", stylesUtilises);
+      popupText.innerText = "Résultat : ✔️";
     }
 
-    document.getElementById("btnValidation").onclick = () => {
-      popupFini.style.display = "none"
+    const btn = document.getElementById("btnValidation");
+    if (btn) {
+      btn.onclick = () => {
+        popup.style.display = "none";
+      };
+    } else {
+      console.error("Bouton btnValidation introuvable dans le DOM.");
     }
-  });  
+  });
 }
+
+
+
