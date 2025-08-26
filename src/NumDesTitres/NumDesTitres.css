@@ -77,4 +77,24 @@
 
 b {
     font-weight: bold;
+    border-radius: 50%;
+}
+
+#consigne{
+    color: white;
+}
+
+#btnIndice{
+    margin: 2em;
+}
+
+.indice{
+    color: white;
+}
+
+#menu{
+    display:none;
+    border:1px solid #ccc;
+    padding:10px;
+    width:250px;
 }
